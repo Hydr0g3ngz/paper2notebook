@@ -20,11 +20,13 @@ paper2notebook/
 ├── SKILL.md
 ├── references/
 │   ├── pedagogy-contract.md
+│   ├── depth-contract.md
 │   ├── paper-type-routing.md
 │   ├── figure-workflow.md
 │   └── notebook-qa.md
 └── scripts/
     ├── scaffold_notebook.py
+    ├── profile_notebook.py
     ├── inspect_pdf_pages.py
     ├── extract_pdf_figure.py
     └── validate_notebook.py
@@ -69,5 +71,6 @@ python scripts/extract_pdf_figure.py --input paper.pdf --page 3 --bbox 0.04,0.05
 Validate an executed notebook:
 
 ```powershell
-python scripts/validate_notebook.py tutorial.ipynb --require-executed --require-local-figures 2
+python scripts/profile_notebook.py reference.ipynb --output reference-profile.json
+python scripts/validate_notebook.py tutorial.ipynb --require-executed --require-local-figures 2 --depth-mode full-onramp --reference-profile reference-profile.json
 ```

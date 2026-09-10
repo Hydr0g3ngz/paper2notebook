@@ -2,6 +2,7 @@
 """Validate notebook execution state and local image links."""
 
 import argparse
+import json
 import re
 from pathlib import Path
 
@@ -16,6 +17,9 @@ def main():
     parser.add_argument("notebook", type=Path)
     parser.add_argument("--require-executed", action="store_true")
     parser.add_argument("--require-local-figures", type=int, default=0)
+    parser.add_argument("--depth-mode", choices=["survey", "full-onramp", "reproduction"])
+    parser.add_argument("--reference", type=Path)
+    parser.add_argument("--reference-profile", type=Path, help="frozen JSON from profile_notebook.py")
     args = parser.parse_args()
 
     if not args.notebook.is_file():
@@ -38,8 +42,8 @@ def main():
         if missing:
             failures.append(f"unexecuted code cells: {missing}")
 
-    headings = [c.source.splitlines()[0] for c in nb.cells
-                if c.cell_type == "markdown" and c.source.lstrip().startswith("#")]
+    markdown_cells = [c for c in nb.cells if c.cell_type == "markdown"]
+    headings = [line for c in markdown_cells for line in c.source.splitlines() if line.startswith("#")]
     if len(headings) < 6:
         warnings.append(f"only {len(headings)} heading cells; inspect pedagogical structure")
 
@@ -58,7 +62,38 @@ def main():
 
     if local_figures < args.require_local_figures:
         failures.append(f"only {local_figures} local figures; require {args.require_local_figures}")
-    print(f"cells={len(nb.cells)}, code={len(code_cells)}, headings={len(headings)}, local_figures={local_figures}, errors={len(errors)}")
+    markdown_chars = sum(len(c.source) for c in markdown_cells)
+    rich_outputs = sum(
+        1 for c in code_cells for out in c.get("outputs", [])
+        if any(key in out.get("data", {}) for key in ("image/png", "image/jpeg", "audio/wav", "text/html"))
+    )
+    if args.depth_mode in ("full-onramp", "reproduction"):
+        floors = {"cells": 28, "code": 8, "headings": 12, "markdown_chars": 7000, "rich_outputs": 3}
+        observed = {"cells": len(nb.cells), "code": len(code_cells), "headings": len(headings),
+                    "markdown_chars": markdown_chars, "rich_outputs": rich_outputs}
+        reference_metrics = None
+        if args.reference_profile:
+            if not args.reference_profile.is_file():
+                failures.append(f"reference profile does not exist: {args.reference_profile}")
+            else:
+                reference_metrics = json.loads(args.reference_profile.read_text(encoding="utf-8"))
+        elif args.reference:
+            if not args.reference.is_file():
+                failures.append(f"reference notebook does not exist: {args.reference}")
+            else:
+                ref = nbformat.read(args.reference, as_version=4)
+                ref_md = [c for c in ref.cells if c.cell_type == "markdown"]
+                ref_code = [c for c in ref.cells if c.cell_type == "code" and c.source.strip()]
+                reference_metrics = {"cells": len(ref.cells), "code_cells": len(ref_code),
+                                     "markdown_chars": sum(len(c.source) for c in ref_md)}
+        if reference_metrics:
+            floors["cells"] = max(floors["cells"], int(reference_metrics["cells"] * 0.70 + 0.999))
+            floors["code"] = max(floors["code"], int(reference_metrics["code_cells"] * 0.70 + 0.999))
+            floors["markdown_chars"] = max(floors["markdown_chars"], int(reference_metrics["markdown_chars"] * 0.70 + 0.999))
+        for key, floor in floors.items():
+            if observed[key] < floor:
+                failures.append(f"depth gate {key}: observed {observed[key]}, require {floor}")
+    print(f"cells={len(nb.cells)}, code={len(code_cells)}, headings={len(headings)}, markdown_chars={markdown_chars}, rich_outputs={rich_outputs}, local_figures={local_figures}, errors={len(errors)}")
     for item in warnings:
         print(f"WARNING: {item}")
     for item in failures:

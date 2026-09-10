@@ -24,7 +24,7 @@
 Run:
 
 ```powershell
-python scripts/validate_notebook.py path/to/notebook.ipynb --require-executed
+python scripts/validate_notebook.py path/to/notebook.ipynb --require-executed --depth-mode full-onramp --reference-profile reference-profile.json
 ```
 
 ## Visual checks
