@@ -1,0 +1,52 @@
+# Notebook QA
+
+## Structural checks
+
+- State learner assumptions, outcomes, and reproduction boundary near the top.
+- Define the task before presenting the architecture.
+- Introduce the previous paradigm and its bottleneck before the paper's solution.
+- Include a whole-system map and per-module explanations.
+- Include a realistic tensor-shape or data-flow trace.
+- Explain the objective and ambiguity/alignment rules.
+- Distinguish toy evidence from paper evidence.
+- Include limitations, common misconceptions, self-checks, and next experiments.
+
+## Execution checks
+
+1. Restart the kernel and execute all cells in order.
+2. Require zero error outputs.
+3. Check deterministic seeds where practical.
+4. Keep the default run reasonable on CPU; mark optional expensive cells.
+5. Avoid hidden state, undeclared files, network-only dependencies, and silent downloads.
+6. Inspect numerical outputs for invariants and plausible ranges.
+7. Include dependency fallbacks or a clear setup cell.
+
+Run:
+
+```powershell
+python scripts/validate_notebook.py path/to/notebook.ipynb --require-executed
+```
+
+## Visual checks
+
+- Open the executed notebook or render it to HTML.
+- Inspect all paper-figure crops at native resolution.
+- Check plots for clipped titles, missing units, unreadable legends, misleading axes, and overlapping text.
+- Check Markdown equations, tables, local links, audio widgets, and long outputs.
+- Prefer a few purposeful visuals over repeated waveform or loss plots.
+
+## Scientific checks
+
+- Tie claims to the source figure, equation, section, or table.
+- Mark interpretations and teaching simplifications.
+- Define the baseline and oracle precisely before saying “better.”
+- State what each major experiment supports and does not prove.
+- List data shortcuts, leakage risks, evaluation caveats, and excluded real-world conditions.
+- Never claim successful reproduction from architecture similarity alone.
+
+## Delivery checks
+
+- Deliver the executed `.ipynb` and its required `assets/` directory.
+- Keep filenames stable and descriptive.
+- Mention runtime, important optional dependencies, and restricted-data boundaries.
+- Link directly to the local notebook and any packaged skill artifact.
