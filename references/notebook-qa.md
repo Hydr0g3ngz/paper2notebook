@@ -32,6 +32,7 @@ python scripts/validate_notebook.py path/to/notebook.ipynb --require-executed
 - Open the executed notebook or render it to HTML.
 - Inspect all paper-figure crops at native resolution.
 - Check plots for clipped titles, missing units, unreadable legends, misleading axes, and overlapping text.
+- Check for tofu boxes or missing glyphs. When the environment lacks a reliable CJK font, use English labels inside generated plots and keep the surrounding Markdown explanation in the user's language.
 - Check Markdown equations, tables, local links, audio widgets, and long outputs.
 - Prefer a few purposeful visuals over repeated waveform or loss plots.
 
@@ -46,7 +47,7 @@ python scripts/validate_notebook.py path/to/notebook.ipynb --require-executed
 
 ## Delivery checks
 
-- Deliver the executed `.ipynb` and its required `assets/` directory.
+- Deliver the executed `.ipynb` and its required `assets/` directory, or embed small images as notebook attachments. Test the notebook from its delivered location.
 - Keep filenames stable and descriptive.
 - Mention runtime, important optional dependencies, and restricted-data boundaries.
 - Link directly to the local notebook and any packaged skill artifact.

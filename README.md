@@ -20,10 +20,12 @@ paper2notebook/
 ├── SKILL.md
 ├── references/
 │   ├── pedagogy-contract.md
+│   ├── paper-type-routing.md
 │   ├── figure-workflow.md
 │   └── notebook-qa.md
 └── scripts/
     ├── scaffold_notebook.py
+    ├── inspect_pdf_pages.py
     ├── extract_pdf_figure.py
     └── validate_notebook.py
 ```
@@ -49,7 +51,13 @@ Restart Codex if the skill is not discovered immediately.
 Create a notebook outline:
 
 ```powershell
-python scripts/scaffold_notebook.py --title "Paper title" --citation "Authors (Year)" --output tutorial.ipynb
+python scripts/scaffold_notebook.py --title "Paper title" --citation "Authors (Year)" --paper-type method --output tutorial.ipynb
+```
+
+Create a labeled page contact sheet before choosing crops:
+
+```powershell
+python scripts/inspect_pdf_pages.py --input paper.pdf --output contact-sheet.png
 ```
 
 Crop a figure from a PDF using normalized page coordinates:
@@ -61,5 +69,5 @@ python scripts/extract_pdf_figure.py --input paper.pdf --page 3 --bbox 0.04,0.05
 Validate an executed notebook:
 
 ```powershell
-python scripts/validate_notebook.py tutorial.ipynb --require-executed
+python scripts/validate_notebook.py tutorial.ipynb --require-executed --require-local-figures 2
 ```
