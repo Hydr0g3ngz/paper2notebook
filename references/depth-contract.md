@@ -16,6 +16,8 @@ Build three connected passes:
 2. **Paper reconstruction** — whole-system map, module contracts, realistic shapes/data flow, objective/training, structure-faithful implementation, mechanism experiments, source evidence, ablations, and failures.
 3. **Research transition** — reproduction ladder, open questions, shortcut/confound audit, falsifiable extensions, and a practical first-week plan.
 
+Expose these passes through three reader-facing lanes near the top: a 3-minute map, a deep-reading path, and a research/reproduction path. The lanes point into the same complete artifact; they do not define three different quality levels.
+
 Use both implementation layers when code is appropriate: a structure-faithful teaching implementation and separate mechanism experiments. A forward-shape skeleton alone is not the first layer.
 
 As a QA floor rather than a writing target, a typical full-onramp should have at least 28 cells, 8 substantive code cells, 12 heading cells, 7,000 Markdown characters, two source figures, and three executed visual/audio outputs. These floors prevent premature delivery; they do not justify filler.
@@ -46,6 +48,8 @@ Before generating cells, record:
 - at least three runnable experiments across Levels 0–2;
 - source architecture/setup figure plus decisive evidence/ablation figures;
 - evidence questions and limitations;
+- a claim-evidence ledger with the load-bearing ablation and explicit missing evidence;
+- equation/mechanism checks and retrieval-practice checkpoints;
 - research-transition exercises.
 
 Do not start prose generation until the blueprint has all applicable items. In a batch, make one blueprint per paper.

@@ -2,6 +2,8 @@
 
 ## Structural checks
 
+- Include a three-lane navigation block: 3-minute map, deep-reading path, and research/reproduction path.
+- Record the source/version manifest and distinguish paper, supplement, official code, and external background.
 - State learner assumptions, outcomes, and reproduction boundary near the top.
 - Define the task before presenting the architecture.
 - Introduce the previous paradigm and its bottleneck before the paper's solution.
@@ -10,6 +12,7 @@
 - Explain the objective and ambiguity/alignment rules.
 - Distinguish toy evidence from paper evidence.
 - Include limitations, common misconceptions, self-checks, and next experiments.
+- Include a claim-evidence ledger and delayed answer checkpoints for retrieval/teach-back questions.
 
 ## Execution checks
 
@@ -39,6 +42,9 @@ python scripts/validate_notebook.py path/to/notebook.ipynb --require-executed --
 ## Scientific checks
 
 - Tie claims to the source figure, equation, section, or table.
+- Treat abstract statements as claims awaiting evidence, not as findings by themselves.
+- Verify the load-bearing ablation or state that the paper did not report one.
+- Label implementation facts as paper-stated, code-confirmed, discrepant, or teaching inference.
 - Mark interpretations and teaching simplifications.
 - Define the baseline and oracle precisely before saying “better.”
 - State what each major experiment supports and does not prove.
