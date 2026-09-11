@@ -14,6 +14,8 @@ It is designed for readers who know basic programming, linear algebra, and machi
 - Build a versioned source manifest and distinguish paper statements, official-code confirmations, discrepancies, and teaching inferences.
 - Audit the abstract's claims against decisive results and load-bearing ablations before explaining the method.
 - Provide three reading lanes, equation sanity checks, and Feynman/retrieval prompts so the notebook supports both scanning and deep study.
+- Build each difficult idea through a concrete concept bridge instead of defining one technical noun with another.
+- Require code cells and figures to be framed by a prediction before them and an observed-result interpretation after them.
 - Execute the notebook from a fresh kernel and validate local image links before delivery.
 
 ## Structure
@@ -28,12 +30,14 @@ paper2notebook/
 │   ├── figure-workflow.md
 │   ├── source-evidence-contract.md
 │   ├── reading-lanes.md
+│   ├── plain-language-contract.md
 │   └── notebook-qa.md
 └── scripts/
     ├── scaffold_notebook.py
     ├── profile_notebook.py
     ├── inspect_pdf_pages.py
     ├── extract_pdf_figure.py
+    ├── audit_readability.py
     └── validate_notebook.py
 ```
 
@@ -80,4 +84,10 @@ Validate an executed notebook:
 ```powershell
 python scripts/profile_notebook.py reference.ipynb --output reference-profile.json
 python scripts/validate_notebook.py tutorial.ipynb --require-executed --require-contract --require-local-figures 2 --depth-mode full-onramp --reference-profile reference-profile.json
+```
+
+Audit prose and notebook pacing before the final validation:
+
+```powershell
+python scripts/audit_readability.py tutorial.ipynb --strict
 ```

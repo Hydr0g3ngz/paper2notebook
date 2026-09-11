@@ -50,6 +50,8 @@ Before generating cells, record:
 - evidence questions and limitations;
 - a claim-evidence ledger with the load-bearing ablation and explicit missing evidence;
 - equation/mechanism checks and retrieval-practice checkpoints;
+- a reader model and at least four complete concept bridges for a full-onramp;
+- explicit interpretation after substantive code and visual outputs;
 - research-transition exercises.
 
 Do not start prose generation until the blueprint has all applicable items. In a batch, make one blueprint per paper.

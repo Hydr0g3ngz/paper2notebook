@@ -13,6 +13,8 @@
 - Distinguish toy evidence from paper evidence.
 - Include limitations, common misconceptions, self-checks, and next experiments.
 - Include a claim-evidence ledger and delayed answer checkpoints for retrieval/teach-back questions.
+- For every central concept, verify the full bridge from reader question and concrete example to term, formalism, observable output, and failure boundary.
+- Interpret every substantive plot, audio output, tensor dump, and metric table immediately after it appears.
 
 ## Execution checks
 
@@ -50,6 +52,13 @@ python scripts/validate_notebook.py path/to/notebook.ipynb --require-executed --
 - State what each major experiment supports and does not prove.
 - List data shortcuts, leakage risks, evaluation caveats, and excluded real-world conditions.
 - Never claim successful reproduction from architecture similarity alone.
+
+## Comprehension checks
+
+- Run the prerequisite, noun-replacement, referent, example, output, compression, and teach-back tests in `plain-language-contract.md`.
+- Confirm that a reader never has to retain more than two unexplained new concepts at once.
+- Confirm that analogies include both a mapping to the real mechanism and a stated breaking point.
+- Run `python scripts/audit_readability.py path/to/notebook.ipynb --strict`; inspect warnings even when it exits successfully.
 
 ## Delivery checks
 

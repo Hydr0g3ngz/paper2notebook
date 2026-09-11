@@ -40,3 +40,17 @@ The redesign therefore adds:
 - a `--require-contract` validator that fails incomplete provenance, coverage, or evidence metadata.
 
 Features not adopted include arbitrary fixed section counts for every paper type, decorative diagram quotas, mandatory HTML output, and mandatory interactive pauses. Those mechanisms conflict with paper-type adaptation or executable-notebook delivery.
+
+## v0.5 plain-language benchmark
+
+The next iteration focused on a different failure: a notebook can be long, accurate, and still force a newcomer to decode the authors' vocabulary unaided.
+
+| Public skill/project | Public signal at review time | Mechanism inspected | Decision |
+|---|---:|---|---|
+| [`openai/skills@jupyter-notebook`](https://www.skills.sh/openai/skills/jupyter-notebook) | 4.5K skills.sh installs | small runnable steps, short interpretation, tutorial/experiment routing, top-to-bottom validation | adopt question/prediction before substantive code and observed-result interpretation after it |
+| [`lilmgenius/paperthin@feynman`](https://www.skills.sh/lilmgenius/paperthin/feynman) | about 900 skills.sh installs during review | explanations must survive skeptical narrowing; restating terminology does not close a gap | adopt noun-replacement and teach-back checks without requiring an interactive critic |
+| [`nathanksou/eli5@eli5`](https://www.skills.sh/nathanksou/eli5/eli5) | about 160 skills.sh installs | lead with the answer, remove filler, explain terms on first use, preserve technical artifacts | adopt prose compression selectively; reject fragment-heavy compression for derivations |
+| [`mgifford/accessibility-skills@plain-language`](https://github.com/mgifford/accessibility-skills/blob/main/skills/plain-language/SKILL.md) | 124 skills.sh installs | structure before prose, one idea per paragraph, front-loaded claims, inline definitions, read-aloud audit | adopt structural clarity; reject a universal English grade-level target for Chinese scientific prose |
+| [`nickcrew/claude-cortex@tutorial-design`](https://github.com/nickcrew/claude-cortex/blob/main/skills/tutorial-design/SKILL.md) | 66 skills.sh installs | dependency maps, one concept per step, concrete before abstract, frequent checkpoints, troubleshooting | adopt concept dependency maps and observable checkpoints; interpret “concrete first” as phenomenon/example before formalism, not unexplained code first |
+
+The resulting v0.5 mechanism adds a seven-part concept bridge, an explanation ladder, analogy map-and-break rules, pre/post code narration, a concrete reader model, a comprehension audit, and a language-agnostic readability diagnostic. It explicitly follows “simplify the path, not the science”: technical terms, equations, qualifications, and failure boundaries remain.

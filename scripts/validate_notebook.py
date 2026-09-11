@@ -19,10 +19,22 @@ REQUIRED_COVERAGE = {
     "reproduction_boundary",
     "research_bridge",
     "retrieval_practice",
+    "plain_language_bridges",
+    "output_interpretation",
+    "comprehension_audit",
 }
 CLAIM_FIELDS = {"claim", "location", "evidence", "status", "supports", "does_not_support", "missing"}
 CLAIM_STATUSES = {"direct", "partial", "background_only", "unsupported", "unverified"}
 SOURCE_STATUSES = {"inspected", "not_found", "not_applicable", "needs_review"}
+BRIDGE_FIELDS = {
+    "concept",
+    "reader_question",
+    "familiar_start",
+    "plain_mechanism",
+    "formal_anchor",
+    "observable_anchor",
+    "failure_boundary",
+}
 
 
 def validate_contract(nb, depth_mode):
@@ -30,8 +42,8 @@ def validate_contract(nb, depth_mode):
     contract = nb.metadata.get("paper2notebook")
     if not isinstance(contract, dict):
         return ["missing notebook metadata: paper2notebook contract"]
-    if str(contract.get("schema_version", "")) != "0.4":
-        failures.append("paper2notebook.schema_version must be 0.4")
+    if str(contract.get("schema_version", "")) != "0.5":
+        failures.append("paper2notebook.schema_version must be 0.5")
     recorded_depth = contract.get("depth_mode")
     if recorded_depth not in {"survey", "full-onramp", "reproduction"}:
         failures.append("paper2notebook.depth_mode is missing or invalid")
@@ -41,6 +53,29 @@ def validate_contract(nb, depth_mode):
         failures.append(f"contract depth_mode={recorded_depth!r} does not match --depth-mode={depth_mode!r}")
     if not contract.get("primary_route"):
         failures.append("paper2notebook.primary_route is missing")
+
+    reader_model = contract.get("reader_model")
+    reader_fields = ("prior_knowledge", "not_assumed", "target_capabilities")
+    if not isinstance(reader_model, dict):
+        failures.append("paper2notebook.reader_model must be an object")
+    else:
+        for field in reader_fields:
+            value = reader_model.get(field)
+            if not isinstance(value, list) or not value:
+                failures.append(f"reader_model.{field} must contain at least one concrete item")
+
+    bridges = contract.get("concept_bridges")
+    minimum_bridges = 2 if recorded_depth == "survey" else 4
+    if not isinstance(bridges, list) or len(bridges) < minimum_bridges:
+        failures.append(f"concept_bridges must contain at least {minimum_bridges} central concept bridge(s)")
+    else:
+        for index, bridge in enumerate(bridges):
+            if not isinstance(bridge, dict):
+                failures.append(f"concept_bridges[{index}] must be an object")
+                continue
+            missing_fields = sorted(field for field in BRIDGE_FIELDS if field not in bridge or bridge[field] in (None, ""))
+            if missing_fields:
+                failures.append(f"concept_bridges[{index}] missing fields: {missing_fields}")
 
     coverage = contract.get("coverage")
     if not isinstance(coverage, dict):

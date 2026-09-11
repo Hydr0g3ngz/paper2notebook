@@ -66,6 +66,9 @@ REQUIRED_COVERAGE = {
     "reproduction_boundary": False,
     "research_bridge": False,
     "retrieval_practice": False,
+    "plain_language_bridges": False,
+    "output_interpretation": False,
+    "comprehension_audit": False,
 }
 
 
@@ -83,7 +86,7 @@ def main():
     nb = nbf.v4.new_notebook()
     nb.metadata["kernelspec"] = {"display_name": "Python 3", "language": "python", "name": "python3"}
     nb.metadata["paper2notebook"] = {
-        "schema_version": "0.4",
+        "schema_version": "0.5",
         "depth_mode": args.depth_mode,
         "grounding_mode": args.grounding_mode,
         "primary_route": args.paper_type,
@@ -93,6 +96,12 @@ def main():
             {"kind": "official_code", "locator": "[add URL/revision or explain absence]", "version": "[pin revision]", "status": "needs_review"},
         ],
         "claim_evidence": [],
+        "reader_model": {
+            "prior_knowledge": [],
+            "not_assumed": [],
+            "target_capabilities": [],
+        },
+        "concept_bridges": [],
     }
     nb.cells.append(nbf.v4.new_markdown_cell(f"# {args.title}\n\n**Paper:** {args.citation}"))
     routes = {"method": METHOD_SECTIONS, "empirical": EMPIRICAL_SECTIONS, "evaluator": EVALUATOR_SECTIONS}
